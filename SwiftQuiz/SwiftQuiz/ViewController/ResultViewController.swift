@@ -19,16 +19,23 @@ class ResultViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setQuizResults()
+    }
+    
+    /**
+     * Method to add results inside each label of ResultViewController
+     * The values are passed by segue of QuizViewController to ResultViewController
+     */
+    func setQuizResults() {
+        let score = totalCorrectAnswers * 100 / totalAnswers
         
         labelAnswered.text = "Perguntas respondidas: \(totalAnswers)"
         labelCorrect.text = "Perguntas corretas: \(totalCorrectAnswers)"
         labelWrong.text = "Perguntas erradas: \(totalAnswers - totalCorrectAnswers)"
-        
-        let score = totalCorrectAnswers * 100 / totalAnswers
-        
         labelScore.text = "\(score)%"
     }
     
+    /** Close the ResultsViewController and redirect the user to QuizViewControlelr again */
     @IBAction func actionClose(_ sender: Any) {
         dismiss(animated: true, completion: nil)
     }

@@ -43,9 +43,7 @@ class QuizManager {
     var totalAnswers: Int { return _totalAnswers }
     var totalCorrectedAnswers: Int { return _totalCorrectAnswers }
     
-    /**
-     * Method to generate a random QuizManager object using an array of Quiz to sort items
-     */
+    /** Method to generate a random QuizManager object using an array of Quiz to sort items */
     func refreshQuiz() {
         let randomIndex = Int(arc4random_uniform(UInt32(quizes.count)))
         let quizData = quizes[randomIndex]

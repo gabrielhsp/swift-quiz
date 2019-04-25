@@ -19,10 +19,12 @@ class Quiz {
         self.correctedAnswer = correctedAnswer
     }
     
+    /** Desconstructor method that print a message when an object of Quiz type is cleared from memory */
     deinit {
         print("Liberou o quiz da memória")
     }
     
+    /** Valide if the option choosed by the user it's the correct answer returning a Bool value */
     func validateOption(_ index: Int) -> Bool {
         let answer = options[index]
         

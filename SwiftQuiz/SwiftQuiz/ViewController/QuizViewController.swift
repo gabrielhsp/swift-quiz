@@ -15,13 +15,32 @@ class QuizViewController: UIViewController {
     
     let quizManager = QuizManager()
     
+    /** Method executed when the view appears at the first time and all components are loaded */
     override func viewDidLoad() {
         super.viewDidLoad()
     }
     
+    /** Method executed when our ViewController will appear to the user, reseting the time bar and generating a new quiz */
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        animateTimerBar()
+        getNewQuiz()
+    }
+    
+    /** Method that prepare the ResultViewController to receive data from QuizViewController */
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let resultViewController = segue.destination as! ResultViewController
         
+        resultViewController.totalAnswers = quizManager.totalAnswers
+        resultViewController.totalCorrectAnswers = quizManager.totalCorrectedAnswers
+    }
+    
+    /**
+     * Animate the timer bar on top of QuizViewController
+     * By default, the time to answer the questions are 60 seconds
+     * To animate the time bar, we change the width of our UIView with the orange color
+     */
+    func animateTimerBar() {
         /** Here we set that the viewTimer will have the same width of our device screen when the view appear */
         viewTimer.frame.size.width = view.frame.size.width
         
@@ -30,17 +49,12 @@ class QuizViewController: UIViewController {
         }) { (success) in
             self.showResults()
         }
-        
-        getNewQuiz()
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let resultViewController = segue.destination as! ResultViewController
-        
-        resultViewController.totalAnswers = quizManager.totalAnswers
-        resultViewController.totalCorrectAnswers = quizManager.totalCorrectedAnswers
-    }
-    
+    /**
+     * Method to generate a new group of question for our quiz
+     * After generating a new quiz, the method is responsible for setting up the title of the question and the answer buttons
+     */
     func getNewQuiz() {
         quizManager.refreshQuiz()
         
@@ -54,10 +68,18 @@ class QuizViewController: UIViewController {
         }
     }
     
+    /**
+     * Method that performs our segue to the ResultsViewController
+     * It's only called on callback closure from animate method of UIView component
+     */
     func showResults() {
         performSegue(withIdentifier: "resultSegue", sender: nil)
     }
 
+    /**
+     * Method associate to a collection of UIButtons, that select and validate the user answer
+     * When the user click, we validate the selected answer and generate a new question inside the app
+     */
     @IBAction func actionSelectAnswer(_ sender: UIButton) {
         let index = collectionButtonsAnswer.firstIndex(of: sender)!
         
